@@ -4,8 +4,9 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
-export default function ErrorPage() {
+function ErrorContent() {
   const searchParams = useSearchParams()
   const error = searchParams.get('error_description') || 'An authentication error occurred'
 
@@ -35,5 +36,24 @@ export default function ErrorPage() {
         </Link>
       </Card>
     </div>
+  )
+}
+
+export default function ErrorPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
+        <Card className="w-full max-w-md p-8 shadow-lg text-center">
+          <div className="mb-6">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full animate-pulse" />
+          </div>
+          <div className="h-8 bg-gray-200 rounded w-3/4 mx-auto mb-2 animate-pulse" />
+          <div className="h-4 bg-gray-200 rounded w-full mx-auto mb-6 animate-pulse" />
+          <div className="h-10 bg-gray-200 rounded w-full animate-pulse" />
+        </Card>
+      </div>
+    }>
+      <ErrorContent />
+    </Suspense>
   )
 }
